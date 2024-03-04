@@ -19,6 +19,25 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import theme from "../theme";
 import App from './App';
 import { createRoot } from "react-dom/client";
+import MiniDrawer from "./VariantDrawer";
+import { BrowserRouter, Route, Routes, Outlet, Navigate } from "react-router-dom";
+
+
+
+function Copyright(props: any) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link color="inherit" href="https://website2-v3xlkt54dq-uc.a.run.app/">
+        Banbury
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+
 
 export default function SignIn() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -53,7 +72,10 @@ export default function SignIn() {
   };
 
   if (isAuthenticated) {
-    return <App />;
+
+    return <MiniDrawer />;
+
+
   }
 
   return (
@@ -80,7 +102,7 @@ export default function SignIn() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Username"
               name="email"
               autoComplete="email"
               size='small'
@@ -126,19 +148,23 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href="/register" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
+        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );
 }
+
+
+

@@ -27,7 +27,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { Container } from "@mui/material";
-
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
 
 
 // Simplified data interface to match your file structure
@@ -213,11 +214,22 @@ const handleApiCall = async () => {
 };
 
 
+  const [Firstname, setFirstname] = useState<string>('');
+  const [Lastname, setLastname] = useState<string>('');
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<{ devices: any[] }>('https://website2-v3xlkt54dq-uc.a.run.app/getuserinfo/');
+        const response = await axios.get<{
+          devices: any[] 
+          first_name: string;
+          last_name: string;
+        }>('https://website2-v3xlkt54dq-uc.a.run.app/getuserinfo/');
 
+        const fetchedFirstname = response.data.first_name;
+        const fetchedLastname = response.data.last_name;
+        setFirstname(fetchedFirstname); 
+        setLastname(fetchedLastname); 
+        console.log(fetchedFirstname);
         const files = response.data.devices.flatMap((device, index) =>
           device.files.map((file: any, fileIndex: number): FileData => ({
             id: index * 1000 + fileIndex, // Generating unique IDs
@@ -226,6 +238,7 @@ const handleApiCall = async () => {
             dateUploaded: file["Date Uploaded"],
           }))
         );
+
         console.log(files);
         setFileRows(files);
       } catch (error) {
@@ -399,6 +412,9 @@ const visibleRows = stableSort(fileRows, getComparator(order, orderBy))
 
   return (
     <Container>
+<Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start' }}>
+<Chip avatar={<Avatar>{Firstname.charAt(0)}</Avatar>} label={`${Firstname} ${Lastname}`} />
+</Box>
     <Box 
       gap={4}
       sx={{ width: '100%' }}>
